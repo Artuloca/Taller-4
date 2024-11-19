@@ -38,9 +38,7 @@ android {
         compose = true
     }
 }
-
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -49,6 +47,12 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation("androidx.glance:glance-appwidget:1.0.0-alpha05")
+    implementation("androidx.compose.ui:ui:1.0.5")
+    implementation("androidx.compose.runtime:runtime:1.0.5")
+    implementation("androidx.compose.foundation:foundation:1.0.5")
+    implementation("androidx.compose.material:material:1.0.5")
+    implementation("androidx.compose.material3:material3:1.0.0-alpha05")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
