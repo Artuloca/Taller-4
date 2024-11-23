@@ -5,6 +5,7 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
+import android.content.Intent
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -14,6 +15,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -33,6 +35,8 @@ class MainActivity : ComponentActivity(), SensorEventListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Configuración del sensor de acelerómetro
         sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
 
@@ -41,7 +45,7 @@ class MainActivity : ComponentActivity(), SensorEventListener {
                 val navController = rememberNavController()
                 NavHost(navController = navController, startDestination = "greeting") {
                     composable("greeting") { GreetingScreen(navController, backgroundColor) }
-                    composable("next") {  }
+                    composable("next") { NextScreen() }
                 }
             }
         }
@@ -85,6 +89,7 @@ class MainActivity : ComponentActivity(), SensorEventListener {
 
 @Composable
 fun GreetingScreen(navController: NavController, backgroundColor: Color) {
+    val context = LocalContext.current
     val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
     val greetingText = when (currentHour) {
         in 0..11 -> "Good Morning"
@@ -95,7 +100,7 @@ fun GreetingScreen(navController: NavController, backgroundColor: Color) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(backgroundColor)
+            .background(backgroundColor) // Cambia el color de fondo según el sensor
             .padding(16.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -106,10 +111,20 @@ fun GreetingScreen(navController: NavController, backgroundColor: Color) {
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(bottom = 16.dp)
         )
-        Button(onClick = { navController.navigate("next") }) {
+        Button(onClick = {
+            val intent = Intent(context, Principal::class.java)
+            context.startActivity(intent)
+        }) {
             Text(text = "Siguiente")
         }
     }
+}
+
+@Composable
+fun NextScreen() {
+    val context = LocalContext.current
+    val intent = Intent(context, Principal::class.java)
+    context.startActivity(intent)
 }
 
 @Preview(showBackground = true)
